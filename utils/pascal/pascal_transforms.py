@@ -31,8 +31,8 @@ def generate_pascal_category_names(df: pd.DataFrame):
     ls = df["labels"].unique()
 
     CATEGORY_NAMES = list(np.zeros(len(ls) + 1))
-    for i, x in enumerate(ls):
-        CATEGORY_NAMES[x] = cs[i]
+    for i, x in enumerate(cs):
+        CATEGORY_NAMES[x] = ls[i]
 
     # Add the background class to the Category names
     # Since the labels start from the 1, we set the 0 value to be the
