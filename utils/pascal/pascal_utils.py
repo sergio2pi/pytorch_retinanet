@@ -97,6 +97,7 @@ class PascalDataset(Dataset):
 
     def __init__(self, dataframe, transforms):
         if isinstance(dataframe, str):
+            self.path = "/".join(dataframe.split('/')[:-1])
             dataframe = pd.read_csv(dataframe)
 
         self.tfms = transforms
@@ -109,7 +110,7 @@ class PascalDataset(Dataset):
     def __getitem__(self, index: int):
         # Grab the Image
         image_id = self.image_ids[index]
-        im = cv2.cvtColor(cv2.imread(image_id), cv2.COLOR_BGR2RGB)
+        im = cv2.cvtColor(cv2.imread(f'{self.path}/{image_id}'), cv2.COLOR_BGR2RGB)
 
         # extract the bounding boxes
         records = self.df[self.df["filename"] == image_id]
@@ -120,7 +121,7 @@ class PascalDataset(Dataset):
         area = torch.as_tensor(area, dtype=torch.float32)
 
         # Grab the Class Labels
-        class_labels = records["labels"].values.tolist()
+        class_labels = records["class"].values.tolist()
 
         # suppose all instances are not crowd
         iscrowd = torch.zeros((records.shape[0],), dtype=torch.int64)
