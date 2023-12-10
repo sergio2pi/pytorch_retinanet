@@ -96,7 +96,7 @@ class Retinanet(nn.Module):
         backbone_kind = ifnone(backbone_kind, BACKBONE)
         prior = ifnone(prior, PRIOR)
         pretrained = ifnone(pretrained, PRETRAINED_BACKBONE)
-        pretrained_file = ifnone(image_std, PRETRAINED_FILE)
+        pretrained_file = ifnone(pretrained_file, PRETRAINED_FILE)
         nms_thres = ifnone(nms_thres, NMS_THRES)
         score_thres = ifnone(score_thres, SCORE_THRES)
         max_detections_per_images = ifnone(max_detections_per_images, MAX_DETECTIONS_PER_IMAGE)
