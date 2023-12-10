@@ -54,6 +54,8 @@ BACKBONE: str = "resnet50"
 # Wether the backbone should be pretrained or not,. If true loads `pre-trained` weights
 PRETRAINED_BACKBONE: bool = True
 
+PRETRAINED_FILE: str = None
+
 # Prior prob for rare case (i.e. foreground) at the beginning of training.
 # This is used to set the bias for the logits layer of the classifier subnet.
 # This improves training stability in the case of heavy class imbalance.

@@ -76,6 +76,7 @@ class Retinanet(nn.Module):
         backbone_kind: Optional[str] = None,
         prior: Optional[float] = None,
         pretrained: Optional[bool] = None,
+        pretrained_file: Optional[str] = None,
         nms_thres: Optional[float] = None,
         score_thres: Optional[float] = None,
         max_detections_per_images: Optional[int] = None,
@@ -95,6 +96,7 @@ class Retinanet(nn.Module):
         backbone_kind = ifnone(backbone_kind, BACKBONE)
         prior = ifnone(prior, PRIOR)
         pretrained = ifnone(pretrained, PRETRAINED_BACKBONE)
+        pretrained_file = ifnone(image_std, PRETRAINED_FILE)
         nms_thres = ifnone(nms_thres, NMS_THRES)
         score_thres = ifnone(score_thres, SCORE_THRES)
         max_detections_per_images = ifnone(max_detections_per_images, MAX_DETECTIONS_PER_IMAGE)
@@ -114,7 +116,7 @@ class Retinanet(nn.Module):
         # Instantiate modules for RetinaNet
         self.backbone_kind = backbone_kind
         self.transform = GeneralizedRCNNTransform(min_size, max_size, image_mean, image_std)
-        self.backbone = get_backbone(backbone_kind, pretrained, freeze_bn=freeze_bn)
+        self.backbone = get_backbone(backbone_kind, pretrained, pretrained_file, freeze_bn=freeze_bn)
         fpn_szs = self._get_backbone_ouputs()
         self.fpn = FeaturePyramid(fpn_szs[0], fpn_szs[1], fpn_szs[2], 256)
         self.anchor_generator = anchor_generator

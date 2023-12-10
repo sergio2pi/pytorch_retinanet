@@ -266,10 +266,13 @@ class ResNetBackbone(nn.Module):
         return self._forward_impl(x)
 
 
-def _resnet(arch, block, layers, pretrained, progress, **kwargs):
+def _resnet(arch, block, layers, pretrained, progress, pretrained_file = None, **kwargs):
     model = ResNetBackbone(block, layers, **kwargs)
+    if pretrained_file == None:
+        model_urls[arch]
+
     if pretrained:
-        state_dict = load_state_dict_from_url(model_urls[arch], progress=progress)
+        state_dict = load_state_dict_from_url(pretrained_file, progress=progress)
         model.load_state_dict(state_dict, strict=False)
     return model
 
@@ -361,8 +364,8 @@ class BackBone(nn.Module):
 
 
 def get_backbone(
-    kind: str = "resnet50", pretrained: bool = True, freeze_bn: bool = True
-) -> nn.Module:
+    kind: str = "resnet50", pretrained: bool = True, pretrained_file: str = None,
+    freeze_bn: bool = True ) -> nn.Module:
     """
     Returns a `ResNet` Backbone.
 
@@ -377,5 +380,6 @@ def get_backbone(
     if kind not in __all__:
         raise ValueError('f"`kind` must be one of {__all__} got {kind}"')
 
-    backbone = BackBone(kind=kind, pretrained=pretrained, freeze_bn=freeze_bn)
+    backbone = BackBone(kind=kind, pretrained=pretrained,
+                        pretrained_file = pretrained_file, freeze_bn=freeze_bn)
     return backbone
